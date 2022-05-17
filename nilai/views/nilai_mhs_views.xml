@@ -1,0 +1,57 @@
+<odoo>
+    <record id="nilai_mhs_view_form" model="ir.ui.view">
+        <field name="name">nilai_mhs.view.form</field>
+        <field name="model">nilai.nilai_mhs</field>
+        <field name="arch" type="xml">
+            <form string="nilai_mhs Form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="khs_id"/>
+                            <field name="mk_id"/>
+                        </group>
+                        <group>
+                            <field name="grade"/>
+                            <field name="mk_sks"/>
+                            <field name="subtotal"/>
+
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="nilai_mhs_view_list" model="ir.ui.view">
+        <field name="name">nilai_mhs.view.list</field>
+        <field name="model">nilai.nilai_mhs</field>
+        <field name="arch" type="xml">
+            <tree string=" nilai_mhs list">
+                <field name="khs_id"/>
+                <field name="mk_id"/>
+                <field name="grade"/>
+                <field name="mk_sks"/>
+                <field name="subtotal"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="nilai_mhs_view_search" model="ir.ui.view">
+        <field name="name">nilai_mhs.view.search</field>
+        <field name="model">nilai.nilai_mhs</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="khs_id"/>
+                <field name="mk_id"/>
+                <field name="grade"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="nilai_mhs_action" model="ir.actions.act_window">
+        <field name="name">nilai_mhs</field>
+        <field name="res_model">nilai.nilai_mhs</field>
+        <field name="view_id" ref="nilai_mhs_view_list"/>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

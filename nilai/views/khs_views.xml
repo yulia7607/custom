@@ -1,0 +1,131 @@
+<odoo>
+    <record id="khs_view_form" model="ir.ui.view">
+        <field name="name">khs.view.form</field>
+        <field name="model">nilai.khs</field>
+        <field name="arch" type="xml">
+            <form string="khs Form">
+                <header>
+                    <button name="action_settodraft" states="canceled" string="Set to Draft" type="object"
+                            class="btn-primary"/>
+                    <button name="action_done" states="draft" string="Done" type="object" class="btn-primary"/>
+                    <!--                   ketika state confirmed atau done, cancel visible-->
+                    <button name="action_canceled" string="Cancel" states="done" type="object"
+                            class="btn-primary" groups="sales_team.group_sale_manager"/>
+                    <!--                    diatur visibility-nya spy hanya manager yang bisa cancel-->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="mhs_id"/>
+                            <field name="semester"/>
+                            <field name="tahun"/>
+                        </group>
+                        <group>
+                            <field name="ips"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Nilai" name="nilai_mhs">
+                            <field name="nilai_mhs_ids">
+                                <tree editable="bottom">
+                                    <field name="khs_id" invisible="1"/>
+                                    <field name="mk_id"/>
+                                    <field name="grade"/>
+                                    <field name="mk_sks"/>
+                                    <field name="subtotal"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="khs_view_list" model="ir.ui.view">
+        <field name="name">khs.view.list</field>
+        <field name="model">nilai.khs</field>
+        <field name="arch" type="xml">
+            <tree string=" KHS list">
+                <field name="mhs_id"/>
+                <field name="name"/>
+                <field name="semester"/>
+                <field name="tahun"/>
+                <field name="ips"/>
+                <field name="state" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="khs_view_search" model="ir.ui.view">
+        <field name="name">khs.view.search</field>
+        <field name="model">nilai.khs</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="mhs_id"/>
+                <field name="semester"/>
+                <field name="tahun"/>
+                <field name="ips"/>
+                <field name="state"/>
+
+                <!--                <filter string="Active" name="active_filter" domain="[('active', '=', 'aktif')]"/>-->
+                <filter string="Done" name="done_filter" domain="[('state', '=', 'done')]"/>
+
+                <group string="Group By..." expand="0" name="groupby">
+                    <!--                    <filter string="State" name="by_state" context="{'group_by': 'state'}"/>-->
+                    <filter string="khs state" name="by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="khs_view_kanban" model="ir.ui.view">
+        <field name="name">khs.view.kanban</field>
+        <field name="model">nilai.khs</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="mhs_id"/>
+                <field name="semester"/>
+                <field name="tahun"/>
+                <field name="ips"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title oe_partner_heading">
+                                    <field name="display_name"/>
+                                </strong>
+                                <ul>
+                                    <li t-if="record.mhs_id.raw_value">
+                                        <field name="mhs_id"/>
+                                    </li>
+                                    <ri t-if="record.semester.raw_value">
+                                        <field name="semester"/>
+                                    </ri>
+                                    <ri t-if="record.tahun.raw_value">
+                                        <field name="tahun"/>
+                                    </ri>
+                                    <ri t-if="record.ips.raw_value">
+                                        <field name="ips"/>
+                                    </ri>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="khs_action" model="ir.actions.act_window">
+        <field name="name">khs</field>
+        <field name="res_model">nilai.khs</field>
+        <field name="view_id" ref="khs_view_list"/>
+        <field name="view_mode">tree,kanban,form</field>
+
+    </record>
+
+    <menuitem id="khs_menu" parent="nilai.nilai_menu" name="KHS"
+              action="khs_action" sequence="20"/>
+
+</odoo>

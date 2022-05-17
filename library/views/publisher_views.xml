@@ -1,0 +1,52 @@
+<odoo>
+    <record id="publisher_view_form" model="ir.ui.view">
+        <field name="name">publisher.view.form</field>
+        <field name="model">library.publisher</field>
+        <field name="arch" type="xml">
+            <form string="publisher Form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="publisher_view_list" model="ir.ui.view">
+        <field name="name">publisher.view.list</field>
+        <field name="model">library.publisher</field>
+        <field name="arch" type="xml">
+            <tree string=" Mhs list">
+                <field name="name"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="publisher_view_search" model="ir.ui.view">
+        <field name="name">publisher.view.search</field>
+        <field name="model">library.publisher</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="active"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="publisher_action" model="ir.actions.act_window">
+        <field name="name">publisher</field>
+        <field name="res_model">library.publisher</field>
+        <field name="view_id" ref="publisher_view_list"/>
+        <field name="view_mode">tree,form</field>
+
+    </record>
+
+    <menuitem id="publisher_menu" parent="library.library_menu" name="Publisher"
+              action="publisher_action" sequence="20"/>
+
+</odoo>

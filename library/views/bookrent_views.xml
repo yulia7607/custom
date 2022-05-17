@@ -1,0 +1,78 @@
+<odoo>
+    <record id="bookrent_view_form" model="ir.ui.view">
+        <field name="name">bookrent.view.form</field>
+        <field name="model">library.bookrent</field>
+        <field name="arch" type="xml">
+            <form string="bookrentrent Form">
+                <header>
+                    <button name="action_settodraft" states="canceled" string="Set to Draft" type="object"
+                            class="btn-primary"/>
+                    <button name="action_done" states="draft" string="Done" type="object" class="btn-primary"/>
+                    <!--                   ketika state confirmed atau done, cancel visible-->
+                    <button name="action_canceled" string="Cancel" states="done" type="object"
+                            class="btn-primary" groups="sales_team.group_sale_manager"/>
+                    <!--                    diatur visibility-nya spy hanya manager yang bisa cancel-->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="member_id"/>
+                            <field name="total"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Rent Detailed" name="bookrent_detil">
+                            <field name="bookrent_detil_ids">
+                                <tree editable="bottom">
+                                    <field name="bookrent_id" invisible="1"/>
+                                    <field name="book_id"/>
+                                    <field name="bookrent_price"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="bookrent_view_list" model="ir.ui.view">
+        <field name="name">bookrent.view.list</field>
+        <field name="model">library.bookrent</field>
+        <field name="arch" type="xml">
+            <tree string=" Mhs list">
+                <field name="date"/>
+                <field name="member_id"/>
+                <field name="total"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="bookrent_view_search" model="ir.ui.view">
+        <field name="name">bookrent.view.search</field>
+        <field name="model">library.bookrent</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="date"/>
+                <field name="member_id"/>
+                <field name="total"/>
+                <field name="state"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="bookrent_action" model="ir.actions.act_window">
+        <field name="name">bookrent</field>
+        <field name="res_model">library.bookrent</field>
+        <field name="view_id" ref="bookrent_view_list"/>
+        <field name="view_mode">tree,form</field>
+
+    </record>
+
+    <menuitem id="bookrent_menu" parent="library.library_menu" name="Book Rent"
+              action="bookrent_action" sequence="30"/>
+
+</odoo>

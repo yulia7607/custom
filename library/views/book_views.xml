@@ -1,0 +1,115 @@
+<odoo>
+    <record id="book_view_form" model="ir.ui.view">
+        <field name="name">book.view.form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form string="book Form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="isbn"/>
+                            <field name="page"/>
+                            <field name="author_id"/>
+                        </group>
+                        <group>
+                            <field name="publisher_id"/>
+                            <field name="rentprice"/>
+                            <field name="cover"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="book_view_list" model="ir.ui.view">
+        <field name="name">book.view.list</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <tree string=" Mhs list">
+                <field name="name"/>
+                <field name="isbn"/>
+                <field name="page"/>
+                <field name="author_id"/>
+                <field name="publisher_id"/>
+                <field name="rentprice"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="book_view_search" model="ir.ui.view">
+        <field name="name">book.view.search</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="isbn"/>
+                <field name="page"/>
+                <field name="author_id"/>
+                <field name="publisher_id"/>
+                <field name="rentprice"/>
+                <field name="active"/>
+
+                <filter string="Active" name="active_filter" domain="[('active', '=', 'aktif')]"/>
+
+                <group string="Group By..." expand="0" name="groupby">
+                    <!--                    <filter string="State" name="by_state" context="{'group_by': 'state'}"/>-->
+                    <filter string="Publisher" name="by_publisher" context="{'group_by': 'publisher_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="book_view_kanban" model="ir.ui.view">
+        <field name="name">book.view.kanban</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="isbn"/>
+                <field name="page"/>
+                <field name="publisher_id"/>
+                <field name="rentprice"/>
+                <field name="active"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title oe_partner_heading">
+                                    <field name="display_name"/>
+                                </strong>
+                                <ul>
+                                    <li t-if="record.name.raw_value">
+                                        <field name="name"/>
+                                    </li>
+                                    <ri t-if="record.isbn.raw_value">
+                                        <field name="isbn"/>
+                                    </ri>
+                                    <ri t-if="record.publisher_id.raw_value">
+                                        <field name="publisher_id"/>
+                                    </ri>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="book_action" model="ir.actions.act_window">
+        <field name="name">book</field>
+        <field name="res_model">library.book</field>
+        <field name="view_id" ref="book_view_list"/>
+        <field name="view_mode">tree,kanban,form</field>
+
+    </record>
+
+    <menuitem id="library_menu" parent="idea.exercise_menu" name="Library"
+        sequence="30"/>
+
+    <menuitem id="book_menu" parent="library.library_menu" name="Book"
+              action="book_action" sequence="10"/>
+
+</odoo>

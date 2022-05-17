@@ -1,0 +1,138 @@
+<odoo>
+    <record id="mahasiswa_view_form" model="ir.ui.view">
+        <field name="name">mahasiswa.view.form</field>
+        <field name="model">nilai.mahasiswa</field>
+        <field name="arch" type="xml">
+            <form string="Mahasiswa Form">
+                <header>
+                    <button name="action_settodraft" states="canceled" string="Set to Draft" type="object"
+                            class="btn-primary"/>
+                    <button name="action_done" states="draft" string="Done" type="object" class="btn-primary"/>
+                    <!--                   ketika state confirmed atau done, cancel visible-->
+                    <button name="action_canceled" string="Cancel" states="done" type="object"
+                            class="btn-primary" groups="sales_team.group_sale_manager"/>
+                    <!--                    diatur visibility-nya spy hanya manager yang bisa cancel-->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="mhs_name"/>
+                        </group>
+                        <group>
+                            <field name="mhs_state"/>
+                            <field name="IPK"/>
+                        </group>
+                    </group>
+                    <!--                    <notebook>-->
+                    <!--                        <page string="Votes" name="votes">-->
+                    <!--                            <field name="voting_ids" readonly="1">-->
+                    <!--&lt;!&ndash;                                <tree editable="bottom" decoration-info="vote == 'abstain'">&ndash;&gt;-->
+                    <!--                                <tree decoration-info="vote == 'abstain'" decoration-warning = "vote == 'yes'">-->
+                    <!--                                    <field name="name"/>-->
+                    <!--                                    <field name="date"/>-->
+                    <!--                                    <field name="voter_id"/>-->
+                    <!--                                    <field name="vote"/>-->
+                    <!--                                    <field name="state"/>-->
+                    <!--                                </tree>-->
+                    <!--                            </field>-->
+                    <!--                        </page>-->
+                    <!--                    </notebook>-->
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="mahasiswa_view_list" model="ir.ui.view">
+        <field name="name">mahasiswa.view.list</field>
+        <field name="model">nilai.mahasiswa</field>
+        <field name="arch" type="xml">
+            <tree string=" Mhs list">
+                <field name="name"/>
+                <field name="mhs_name"/>
+                <field name="mhs_state"/>
+                <field name="state" invisible="1"/>
+                <field name="IPK"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="mahasiswa_view_search" model="ir.ui.view">
+        <field name="name">mahasiswa.view.search</field>
+        <field name="model">nilai.mahasiswa</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="mhs_name"/>
+                <field name="mhs_state"/>
+                <field name="IPK"/>
+                <field name="state"/>
+
+                <filter string="Active" name="active_filter" domain="[('mhs_state', '=', 'aktif')]"/>
+                <filter string="Cuti" name="cuti_filter" domain="[('mhs_state', '=', 'cuti')]"/>
+                <filter string="DO" name="do_filter" domain="[('mhs_state', '=', 'do')]"/>
+                <filter string="Lulus" name="lulus_filter" domain="[('mhs_state', '=', 'lulus')]"/>
+                <filter string="Done" name="done_filter" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <filter string="IPK>3" name="ipk3_filter" domain="[('IPK', '>', 3)]"/>
+
+                <group string="Group By..." expand="0" name="groupby">
+<!--                    <filter string="State" name="by_state" context="{'group_by': 'state'}"/>-->
+                    <filter string="Mahasiswa state" name="by_mhs_state" context="{'group_by': 'mhs_state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="mahasiswa_view_kanban" model="ir.ui.view">
+        <field name="name">mahasiswa.view.kanban</field>
+        <field name="model">nilai.mahasiswa</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="mhs_name"/>
+                <field name="mhs_state"/>
+                <field name="state"/>
+                <field name="IPK"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title oe_partner_heading">
+                                    <field name="display_name"/>
+                                </strong>
+                                <ul>
+                                    <li t-if="record.mhs_name.raw_value">
+                                        <field name="mhs_name"/>
+                                    </li>
+                                    <ri t-if="record.IPK.raw_value">
+                                        <field name="IPK"/>
+                                    </ri>
+                                    <ri t-if="record.mhs_state.raw_value">
+                                        <field name="mhs_state"/>
+                                    </ri>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="mahasiswa_action" model="ir.actions.act_window">
+        <field name="name">Mahasiswa</field>
+        <field name="res_model">nilai.mahasiswa</field>
+        <field name="view_id" ref="mahasiswa_view_list"/>
+        <field name="view_mode">tree,kanban,form</field>
+
+    </record>
+
+<!--    <menuitem id="nilai_mahasiswa_menu" name="Mahasiswa"-->
+<!--              sequence="10"/>-->
+
+    <menuitem id="nilai_menu" parent="idea.exercise_menu" name="Nilai"
+              sequence="20"/>
+    <menuitem id="mhs_menu" parent="nilai.nilai_menu" name="Mahasiswa"
+              action="mahasiswa_action" sequence="10"/>
+
+</odoo>
