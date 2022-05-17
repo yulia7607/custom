@@ -7,7 +7,11 @@
     # di idea/static/description, bisa kasi icon modul juga.
     'category': 'Latihan',
     'website': 'http://sib.petra.ac.id',
+<<<<<<< HEAD
     'depends': ['base', 'sales_team'],  # list test of dependencies, conditioning startup order
+=======
+    'depends': ['base', 'sales_team'],  # list of dependencies, conditioning startup order
+>>>>>>> b56841da477bc65957393939451ab777d44a1643
     'data': [
         'security/ir.model.access.csv',
         'views/idea_views.xml',
